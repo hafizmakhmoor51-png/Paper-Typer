@@ -65,7 +65,12 @@ export default function AITranscriber({ onBack, onSave }: AITranscriberProps) {
     setError(null);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        throw new Error("AI service is configuring. Please wait or ensure GEMINI_API_KEY is available.");
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
       const base64Data = await fileToBase64(file);
       const mimeType = file.type;
 
